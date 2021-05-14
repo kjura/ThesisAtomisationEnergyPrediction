@@ -1,0 +1,103 @@
+\begin{lstlisting}[language=Python]
+# -------------------------------
+# Import the neccessary libraries
+# -------------------------------
+
+import numpy as np
+from sklearn.model_selection import train_test_split
+import tensorflow as tf
+from tensorflow import keras
+import scipy.io
+import time
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+# -------------------------------
+# Load the dataset:
+# Below are charateristics of a qm7 dataset containig 7165 molecules
+# -------------------------------
+# X = dataset['X'][P] # len(1433), "X" - (7165 x 23 x 23), Coulomb matrices
+# T = dataset['T'][0,P] # len(1433), "T" - (7165), atomization energies (unit: kcal/mol)
+# -------------------------------
+
+dataset = scipy.io.loadmat('drive/MyDrive/MLThesis/data/qm7.mat')
+
+
+
+# -------------------------------
+# Reshape features (X, coulomb matrices) and outputs 
+# (y, atomization energies, kcal/mol) in order for 
+# network to process the data correctly
+# 
+# -------------------------------
+
+X = (dataset['X'] / 370.0).reshape((7165, 529, 1)) 
+
+y = np.transpose(dataset['T']).reshape((7165,)) / 2000 
+
+
+# -------------------------------
+# Prepare the data for training and test
+# Split the data 80/20 (train / test)
+# -------------------------------
+
+
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.20, random_state=42)
+
+
+
+# -------------------------------
+# Prepare the environment
+# for the neural network
+# -------------------------------
+
+
+model = keras.models.Sequential()
+
+model.add(keras.layers.Dense(32, activation= "relu"))
+model.add(keras.layers.Dense(64, activation= "relu"))
+model.add(keras.layers.Dense(128, activation= "relu"))
+model.add(keras.layers.Dense(256, activation= "relu"))
+model.add(keras.layers.Flatten())
+model.add(keras.layers.Dense(1, activation='linear'))
+
+
+# -------------------------------
+# Adjust hyperparameters
+# -------------------------------
+
+
+model.compile(loss="mean_squared_error",
+              optimizer = keras.optimizers.Adam(0.001),
+              metrics=["mae"])
+
+start = time.time()
+
+
+# -------------------------------
+# Run the model and let it learn from itself
+# -------------------------------
+
+
+history = model.fit(X_train, y_train, epochs=10, validation_data=(X_test, y_test))
+
+
+model.summary()
+
+
+end = time.time()
+
+print('Execution time: ', end-start)
+print("Epochs: ", len(history.history['val_loss']))
+
+
+# -------------------------------
+# Test model on an unseen data
+# -------------------------------
+
+y_pred = model.predict(X_test)
+
+\end{lstlisting}
