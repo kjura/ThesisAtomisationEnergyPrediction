@@ -150,7 +150,7 @@
 
 \section{Aim of the thesis}
 
-This thesis is focused on showing that using machine learning, we can build an AI-based regression model that can predict the quantum parameters of chemical compounds. We will focus on the prediction of the atomization energies, but the method is versatile and it can be used to predict other parameters (e.g molecular spectra). The author will show how algorithm reaches convergence on a plot as well as compare real calculated values to the predicted ones. 
+This thesis is focused on showing that using machine learning, we can build an AI-based regression model that can predict the quantum parameters of chemical compounds. We will focus on the prediction of the atomization energies, but the method is versatile and it can be used to predict other parameters (e.g molecular spectra). The author will show how algorithm reaches convergence on a plot with respect to its errors as well as compare real calculated values to the predicted ones showing how well the AI learns the energies from matrices.
 
 \section{Scope of the thesis}
 
@@ -317,69 +317,6 @@ Below is the short description of how one can calculate the atomization energy o
     \item Calculate the total molecule energy;
     \item Subtract the energies of the atoms from the total molecule energy to obtain the atomization energy.
 \end{itemize}
-
-This 
-
-\section{Spectroscopy and atomic spectra}
-
-\subsection{Electromagnetic waves}
- 
-Electromagnetic waves consist of oscillating magnetic and electric field propagating through space with constant velocity where a trajectory is a curve that takes the minimum time to reach from starting point of the path to the ending point. When light propagates through vacuum, it travels with a speed of 299 792 458 m / s. Naturally, when light travels through a medium it slows down so it is moving slower than in a vacuum.The speed of light is the limit of how fast an object, information or any physical body can move. Electromagnetic waves are transverse, the electric and magnetic fields are perpendicular to the direction of propagation. If we have a propagating wave (in a vacuum) in the $z$ direction then we can compose formulas for electric field $E$ and magnetic field $B$ as follows:\cite{griffiths}
-
-\begin{equation}
-    \tilde{\textbf{E}}(z, t) = \tilde{\textbf{E}}_{0}e^{i(kz - \omega t)},
-\end{equation}
-    
-\begin{equation}
-    \tilde{\textbf{B}}(z, t) =\tilde{\textbf{B}}_{0}e^{i(kz - \omega t)},
-\end{equation}
-
-Where $t$ is time, $\tilde{\textbf{B}}_{0}$ and $\tilde{\textbf{E}}_{0}$ are complex amplitudes of electric and magnetic waves, $k$ is wavenumber related to the wavelength $\lambda$ by $\lambda = \frac{2 \pi}{k}$. The omega symbols stands for angular frequency which is frequency scaled by $2 \pi$ namely, $\omega = 2 \pi \nu = kv$ where $v$ is speed of propagation. Any wave can be expressed as a linear combination of sinusoidal ones by Fourier transform:\cite{griffiths}
-
-\begin{equation}
-    \tilde{f}(z, t) = \int_{-\infty}^{\infty} \tilde{A}(k)e^{i(kz - \omega t)} dk
-\end{equation}
-
-The electromagnetic spectrum shows the major categories of electromagnetic waves (Figure 1.2):
-\noindent
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.3]{DocumentFigures/Figures/EnMSpectrum.jpg}
-\caption{Electromagnetic spectrum \cite{spectrum}}
-\end{figure}
-
-\subsection{Quantum mechanics and atomic spectra}
-
-The founders of the spectroscopic analysis, Kirchhoff and Bunsen, first discovered in the middle of 19th century that each element has its own charateristic spectrum. The simplest atom. hydrogen, consists of a proton and an electron. It has played an important role in the development of quantum mechanics. The emmission spectrum of atomic hydrogen shows three lines in the visible region at 6563, 4861 and 4340 Å. The most intense of these lines was discovered by Ångström in 1853.
-
-In 1885 Balmer, found that these lines can be reproduced by a relation:
-
-\begin{equation}
-    \lambda = \frac{n_{1}^2}{n_{1}^{2} - 4} \cdot G,
-\end{equation}
-
-$n_{1}$ is an integer $3, 4, 5, ...$ and $G$ is an empirical constant. With today's knowledge we write Balmer's formula differently, mainly:
-
-\begin{equation}
-    \tilde{v} = \frac{1}{\lambda} = R_{H}\Big( \frac{1}{2^{2}} - \frac{1}{n^{2}} \Big),
-\end{equation}
-
-with $n > 2, n \in \mathbf{N}$. $R_{H} = \frac{4}{G}$ is called the Rydberg constant. The whole spectrum of the hydrogen atom is generalized in the form:
-
-\begin{equation}
-    \tilde{v} =  R_{H}\Big( \frac{1}{n'^{2}} - \frac{1}{n^{2}} \Big)
-\end{equation}
-
-with $n' < n$ being integers. The $n'$ and $n$ are called principal quantum numbers. In 1913 Niels Bohr tried to explain the relationship between atomic structure and spectral lines by making postulates that deviated from classical behaviour for the electrons in an atom. His remark about spectral lines was following: Observations of spectral lines are dependent on the occupation of the energy states. The Bohr's prediction are accurate for hydrogen-like systems. Arnold Sommerfeld made an extension of the Bohr model using eliptical orbis in his calculations, but Bohr-Sommerfeld model does not give us the full quantum treatment. The results become wrong even for atoms with two electrons. One has to also consider:\cite{haken}
-
-\begin{itemize}
-    \item The motion of the nucleus around the common centre of gravity of the nucleus and the electrons.
-    \item The differing volumes of isotopic nuclei.
-    \item The existence of spins and magnetic moments of the atomic nuclei.
-    \item Quantum Electrodynamics corrections.
-\end{itemize}
-
 
 \subsection{Spectroscopy}
 
@@ -846,7 +783,7 @@ Pandas \cite{pandas} is an open source data analysis and manipulation tool, buil
 
 \section{Dataset}
 
-The dataset that has been used in implementation of a network was taken from \cite{dataset}.The whole credit of using this data goes to \cite{blum} \cite{rupp}. It is a subset of a much broader data set, namely GDB-13 which contains close to one billion stable and synthetically accessible organic molecules. It is important to note that QM7 dataset has molecules that do not exceed 23 atoms in accordance to their structure. The whole dataset has 7165 molecules with their Coulomb's matrices calculated beforehand. The atomization energies are in SI units of kcal/mol in the range between $-800$ to $-2000$ kcal/mol.The structure of QM7 is as follows:
+The dataset that has been used in implementation of a network was taken from \cite{dataset}.The whole credit of using this data goes to \cite{blum} \cite{rupp}. It is a subset of a much broader data set, namely GDB-13 which contains close to one billion stable and synthetically accessible organic molecules. It is important to note that QM7 dataset has molecules that do not exceed 23 atoms in accordance to their structure. The whole dataset has 7165 molecules with their Coulomb's matrices calculated beforehand. The atomization energies are in SI units of kcal/mole in the range between $-800$ to $-2000$ kcal/mole.The structure of QM7 is as follows:
 
 \begin{itemize}
     \item Array X: It represents the molecules and their respective Coulomb's matrices having the shape (7165 x 23 x 23), this array is treated as an iput for neural network.
@@ -945,6 +882,22 @@ Since deep learning methods can be highly sensitive to hardware of a computation
 \end{itemize}
 
 
+Below we can see how the code can be compiled using Google environment:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{DocumentFigures/MyFigures/feedforwardenvir.png}
+\caption{Google Colaboratory Platform - screenshot I}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{DocumentFigures/MyFigures/ImpotLibrariesEnvir.png}
+\caption{Google Colaboratory Platform - screenshot II}
+\end{figure}
+
+
+
 \section{Pipeline}
 
 \subsection{Importing libraries}
@@ -957,31 +910,84 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from tensorflow import keras
+from keras.layers import Flatten, Dense
 import scipy.io
 import time
-import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
+from keras.callbacks import ReduceLROnPlateau, EarlyStopping
+from keras.models import Sequential
+from keras import optimizers
+from sklearn.metrics import r2_score
+import seaborn as sns
 
 
 \end{verbatim}
 
 
-\subsection{Data preparing}
+\subsection{Dataset loading}
 
-We use sci-kit learn library to split our dataset for validation and training purposes. We have to reshape our target variable "y" so it will fit precisely to the ANN:
+We use sci-kit learn library to load our dataset. It is written as .mat file ( meaning that it was generated in MATLAB environment). By using loadmat() method we convert the data to numpy array:
 
 \begin{verbatim}[language=Python]
 
-X = (dataset['X'] / 370.0).reshape((7165, 529, 1)) 
 
-y = np.transpose(dataset['T']).reshape((7165,)) / 2000 
+dataset = scipy.io.loadmat('drive/MyDrive/MLThesis/data/qm7.mat')
 
 
 \end{verbatim}
 
+\subsection{Scaling and reshaping}
+
+After we have loaded the dataset. We first begin by reshaping the input variable $X$ and target variable $Y$ to dimensions acceptable by ANN. Since $X$ is composed of  $23 \times 23$ matrices we "flatten" every matrix from $X$ to $529 \times 1$. We are also reshaping $Y$ so we can represent it as a row vector.
+
+We use one of the simplest methods of data scaling, taking maximum value of both sets and dividing each entry by this maximum value.
+
+\begin{verbatim}[language=Python]
+
+
+X = dataset['X'].reshape((7165, 529, 1)) 
+Y = np.transpose(dataset["T"]).reshape((7165,))
+
+container = []
+for i in X:
+  container.append(i.max())
+  
+
+X_max = max(container)
+Y_max = np.abs(dataset["T"].min())
+
+
+X_scaled = X / X_max
+Y_scaled = Y / Y_max
+
+
+\end{verbatim}
+
+\subsection{Splitting data to training, validation and test sets}
+
+We begin by using the holdout method and we are splitting the data into three parts: a training dataset, a validation dataset, and a test dataset. Test data set vs validation and training data set is split in 80:20 ratio. Same is the split for training and validation.
+
+
+\begin{verbatim}
+# Leave data that will be "unseen" in X_test and Y_test variables
+X_trainvalidate, X_test, Y_trainvalidate, Y_test = train_test_split(X_scaled, 
+                                                                    Y_scaled,  
+                                                    test_size=.20, 
+                                                    random_state=666)
+
+# Data for the algo input
+X_train, X_validation, Y_train, Y_validation = train_test_split(X_trainvalidate, 
+                                                                Y_trainvalidate,  
+                                                                test_size=.20, 
+                                                                random_state=666)
+\end{verbatim}
+
+
 \subsection{Sequential model}
 
-After the data pre-processing we can go into the structure of a model using Keras sequential model. It is a perfect fit for a situation where each layer has exactly one input tensor and one output tensor where we overall have a stack of layers. We could not use the sequential model in a following scenario:
+After the data pre-processing we can go into the structure of a model using Keras sequential model. It is a perfect fit for a situation where each layer has exactly one input tensor and one output tensor where overall, we have a stack of layers. We could not use the sequential model in a following scenario:
 
 \begin{itemize}
     \item There would have been multiple inputs or outputs in the model
@@ -990,61 +996,120 @@ After the data pre-processing we can go into the structure of a model using Kera
     \item There would be a need for non-linear topology
 \end{itemize}
 
-We will pass a list of layers to the Sequential constructor:
+We will pass a list of layers to the Sequential constructor contained in variable "model". We will also specify a normal distribution for weights generation. :
 
 \begin{verbatim}
 
-model = keras.models.Sequential()
+model = Sequential()
+kernel_initializer='he_normal'
 
-model.add(keras.layers.Dense(32, activation= "relu"))
-model.add(keras.layers.Dense(64, activation= "relu"))
-model.add(keras.layers.Dense(128, activation= "relu"))
-model.add(keras.layers.Dense(256, activation= "relu"))
-model.add(keras.layers.Flatten())
-model.add(keras.layers.Dense(1, activation='linear'))
-
+# 64 -> 128 -> 529 -> Flatten -> 1
+model.add(Dense(64, activation='relu', kernel_initializer=kernel_initializer))
+model.add(Dense(128, activation='relu', kernel_initializer=kernel_initializer))
+model.add(Dense(529, activation='relu', kernel_initializer=kernel_initializer))
+model.add(Flatten())
+model.add(Dense(1, activation='linear'))
 \end{verbatim}
 
-Through the usage of "add" method, we create overall 6 layers with different shapes, we use reLU activation function for the first four layers, then we use "Flatten" function to get our output as a 1-D vector using linear activation function on the output. 
 
-\subsection{Adjusting hyperparameters}
-
-In these lines we have set hyperparameters for the network and basically we tell the program how learning should be approached inside the layers: 
+After the above is met, we use compile method to configurate the model for training. Our loss will be measured using Mean Absolute Error (and additional Root Mean Square Error set in metrics variable) and we choose Adam for our gradient descent optimization algorithm with learning rate set to 0.001.
 
 \begin{verbatim}
-model.compile(loss="mean_squared_error",
-              optimizer = keras.optimizers.Adam(0.001),
-              metrics=["mae"])
-
+    
+    model.compile(loss='mae',
+              optimizer=optimizers.Adam(.001),
+              metrics=['mae', tf.keras.metrics.RootMeanSquaredError()])
+    
 \end{verbatim}
 
-\subsection{Validation of a model}
 
-Finally, we test our model on an unseen data to observe how well our model learnt to predict energies:
+
+
+Through the usage of "add" method, we create overall 6 layers with different shapes, we use reLU activation function for the first four layers, then we use "Flatten" function (the whole operation is sketched below) to get our output as a 1-D vector using linear activation function on the output. 
+
+
+\subsection{Sketch of the model ( layers and flattening)}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{DocumentFigures/MyFigures/FlattenOperatioNNscheme.png}
+\caption{Simplified sketch of architecture}
+\end{figure}
+
+
+\section{Training the model}
+
+
+We begin by using time module to calculate how long will it take for the model to finish training. We use a callback API to make our model more efficient using ReduceLROnPlateau. If the metric stops improving after some specified ("patience" parameter) period of time (epochs) this method will accelerate the convergence of the algorithm by reducing eta parameter by the factor of 0.1.
+
+We set number of epochs to 15 and we initialize training of the model by providing 7 arguments: coulomb matrix train dataset, energies from the train set, batch size of our model, previously specified number of epochs, callback parameter for reducing eta, and validation data. Finally, we print the network summary via summary() method.
 
 \begin{verbatim}[language=Python]
 
-y_pred = model.predict(X_test)
+start = time.time()
 
+
+reduce_eta = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=1, verbose=1)
+
+n_epochs = 15
+
+history = model.fit(X_train, Y_train,
+                      batch_size=4,
+                      epochs=n_epochs, 
+                      callbacks=[reduce_eta],
+                      verbose=1,
+                      validation_data=(X_validation, Y_validation))
+
+model.summary()
+
+end = time.time()
+
+print(f"Training time: {end-start}")
+print(f"Number of epochs: {n_epochs}")
 
 \end{verbatim}
 
 \section{Results}
 
 
-The model predicts the data with an error of $0.856 \frac{\text{kcal}}{\text{mole}}$ working with a train set. When the validation of the model is executed, the error is $0.589 \frac{\text{kcal}}{\text{mole}}$. In the figure (2.2) it can be seen how the predicted values and the real values compare oneself into a straight line pattern, meaning that the algorithm efficiently solved the minimization problem and found the best approximation from the data input to the real spectroscopic data. 
+The algorithm was given 15 epochs until it finished training itself and Mean Absolute Error on test dataset yields 23.040 MAE and reaching the last epoch was obtained after 582.57 seconds.
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.8]{DocumentFigures/Figures/MAEMLPver2.png}
-\caption{Convergence of MLP}
+\includegraphics[scale=0.5]{DocumentFigures/ZdjeciaWalidacja/MAEtest.png}
+\caption{Summary of the model after all iterations have passed}
+\end{figure}
+
+
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.8]{DocumentFigures/ZdjeciaWalidacja/Losstraining.png}
+\caption{Plot of loss using Mean Absolute Error on a training dataset}
 \end{figure}
 
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.8]{DocumentFigures/Figures/COMPver2.png}
-\caption{Comparison of the data}
+\includegraphics[scale=0.8]{DocumentFigures/ZdjeciaWalidacja/Lossvalidation.png}
+\caption{Plot of loss using Mean Absolute Error on a validation dataset}
+\end{figure}
+
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{DocumentFigures/ZdjeciaWalidacja/R2test.png}
+\caption{R2 score for test dataset}
+\end{figure}
+
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{DocumentFigures/ZdjeciaWalidacja/ResidualsTest.png}
+\caption{Residual plot for predicted energies}
 \end{figure}
 
 
@@ -1052,9 +1117,9 @@ The model predicts the data with an error of $0.856 \frac{\text{kcal}}{\text{mol
 
 \section{Conclusions}
 
-In this thesis the author showed how machine learning techniques can enhance the physics discoveries and accelerate our knowledge about the physical world that we live in. It is neccessary to recognize a potential in deep learning techniques because as we know time and computational efficiency have become a really important issue when it comes to numerical methods in Physics. This thesis shows that it is not mandatory to have a new cutting edge technology PC to be able to solve Physics problems. One can just use the newest tools of technology and use them to unleash the full capacity of artificial neural networks in order to estimate the atomic energies that are hard to obtain using more  traditional methods of numerically solving Schrodinger's equation.The new generations of physists can take advantage from nowadays artificial intelligence solutions and be clever about them such that they can overcome hardships coming from unavoidable costs from high science facilities. The author hopes that he will be able to test even better solutions like Convolutional Neural Networks and specialised types of ANNs in the future.
+The author of this thesis has described the quantum principles that have been used to calculate chemical quantum parameters such as atomization energy. We can see that algorithm has reached convergence both on training set and validation set implying that it has found the approximated solution (approximated energies) with $23.04$ MAE. The $R^2$ coefficient of determination of the regression analysis gives $0.9769$ which implies that the approximated energies were predicted in a way that they closely resemble the real ones. Residual analysis shows that there are only few outliers and there is not a clear visible pattern constructed from points therefore we can say that the model is able to capture some explanatory information.
 
-
+It has been shown that Deep Learning methods can be used to solve interesting Physics phenomena in quantum oriented field. What remains is the need to improve the validity of the models and closely approach the chemical and physical accuracy that one can achieve by the experiment.
 
 
 
@@ -1066,108 +1131,157 @@ In this thesis the author showed how machine learning techniques can enhance the
 
 
 \begin{verbatim}
-# -------------------------------
-# Import the neccessary libraries
-# -------------------------------
+
+Automatically generated by Colaboratory.
+
+Original file is located at
+    https://colab.research.google.com/drive/10gPxt_Np-Q7P-HBprNad8SVtuS9nQyZ0
+
+##Libraries
+"""
 
 import numpy as np
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
 from tensorflow import keras
+from keras.layers import Flatten, Dense
 import scipy.io
 import time
-import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
+from keras.callbacks import ReduceLROnPlateau, EarlyStopping
+from keras.models import Sequential
+from keras import optimizers
+from sklearn.metrics import r2_score
+import seaborn as sns
 
-
-# -------------------------------
-# Load the dataset:
-# Below are charateristics of a qm7 dataset containig 7165 molecules
-# -------------------------------
-# X = dataset['X'][P] # len(1433), "X" - (7165 x 23 x 23), Coulomb matrices
-# T = dataset['T'][0,P] # len(1433), "T" - (7165), atomization energies (unit: kcal/mol)
-# -------------------------------
+"""##Feed Forward Neural Network"""
 
 dataset = scipy.io.loadmat('drive/MyDrive/MLThesis/data/qm7.mat')
 
+X = dataset['X'].reshape((7165, 529, 1)) 
+Y = np.transpose(dataset["T"]).reshape((7165,))
+
+container = []
+for i in X:
+  container.append(i.max())
+  
+
+X_max = max(container)
+Y_max = np.abs(dataset["T"].min())
 
 
-# -------------------------------
-# Reshape features (X, coulomb matrices) and outputs 
-# (y, atomization energies, kcal/mol) in order for 
-# network to process the data correctly
-# 
-# -------------------------------
-
-X = (dataset['X'] / 370.0).reshape((7165, 529, 1)) 
-
-y = np.transpose(dataset['T']).reshape((7165,)) / 2000 
+X_scaled = X / X_max
+Y_scaled = Y / Y_max
 
 
-# -------------------------------
-# Prepare the data for training and test
-# Split the data 80/20 (train / test)
-# -------------------------------
+# Leave data that will be "unseen" in X_test and Y_test variables
+X_trainvalidate, X_test, Y_trainvalidate, Y_test = train_test_split(X_scaled, Y_scaled,  
+                                                    test_size=.15, 
+                                                    random_state=666)
+
+# Data for the algo input
+X_train, X_validation, Y_train, Y_validation = train_test_split(X_trainvalidate, Y_trainvalidate,  test_size=.18, random_state=666)
 
 
+model = Sequential()
+kernel_initializer='he_normal'
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.20, random_state=42)
-
-
-
-# -------------------------------
-# Prepare the environment
-# for the neural network
-# -------------------------------
-
-
-model = keras.models.Sequential()
-
-model.add(keras.layers.Dense(32, activation= "relu"))
-model.add(keras.layers.Dense(64, activation= "relu"))
-model.add(keras.layers.Dense(128, activation= "relu"))
-model.add(keras.layers.Dense(256, activation= "relu"))
-model.add(keras.layers.Flatten())
-model.add(keras.layers.Dense(1, activation='linear'))
+# 64 -> 128 -> 529 -> Flatten -> 1
+model.add(Dense(64, activation='relu', kernel_initializer=kernel_initializer))
+model.add(Dense(128, activation='relu', kernel_initializer=kernel_initializer))
+model.add(Dense(529, activation='relu', kernel_initializer=kernel_initializer))
+model.add(Flatten())
+model.add(Dense(1, activation='linear'))
 
 
-# -------------------------------
-# Adjust hyperparameters
-# -------------------------------
+model.compile(loss='mae',
+              optimizer=optimizers.Adam(.001),
+              metrics=['mae', tf.keras.metrics.RootMeanSquaredError()])
 
 
-model.compile(loss="mean_squared_error",
-              optimizer = keras.optimizers.Adam(0.001),
-              metrics=["mae"])
 
 start = time.time()
 
 
-# -------------------------------
-# Run the model and let it learn from itself
-# -------------------------------
+reduce_eta = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=1, verbose=1)
 
+n_epochs = 15
 
-history = model.fit(X_train, y_train, epochs=10, validation_data=(X_test, y_test))
-
+history = model.fit(X_train, Y_train,
+                      batch_size=4,
+                      epochs=n_epochs, 
+                      callbacks=[reduce_eta],
+                      verbose=1,
+                      validation_data=(X_validation, Y_validation))
 
 model.summary()
 
-
 end = time.time()
 
-print('Execution time: ', end-start)
-print("Epochs: ", len(history.history['val_loss']))
+print(f"Training time: {end-start}")
+print(f"Number of epochs: {n_epochs}")
+
+"""## Validation"""
+
+approximated_energy = model.predict(X_test)
 
 
-# -------------------------------
-# Test model on an unseen data
-# -------------------------------
+print(f"Test dataset error (MAE): {Y_max*mean_absolute_error(Y_test, approximated_energy)}")
+print(f"Test dataset error (RMSE): {Y_max*mean_squared_error(Y_test, approximated_energy, squared=False)}")
 
-y_pred = model.predict(X_test)
+#plt.figure(figsize=(8,8))
 
-\end{lstlisting}
+loss = np.array(history.history["loss"]) * Y_max
+mae = np.array(history.history["mae"]) * Y_max
+rmse = np.array(history.history['root_mean_squared_error']) * Y_max
+val_loss = np.array(history.history["val_loss"]) * Y_max
+val_mae = np.array(history.history["val_mae"]) * Y_max
+val_rmse = np.array(history.history['val_root_mean_squared_error']) * Y_max
+
+epochs = [x for x in range(1, n_epochs + 1)]
+
+print(f"Mean absolute error over epochs from test set {mae}")
+print(f"Mean absolute error over epochs from validation set {val_mae}")
+print(f"Root mean square error over epochs from test set {rmse}")
+print(f"Root mean square error over epochs from validation set {val_rmse}")
+
+plt.figure(figsize=(10,10))
+plt.title("Loss on a training set")
+plt.xlabel("Epoch")
+plt.ylabel("Mean Absolute Error")
+plt.xticks(epochs)
+plt.plot(loss)
+
+plt.figure(figsize=(10,10))
+plt.title("Loss on a validation set")
+plt.xlabel("Epoch")
+plt.ylabel("Mean Absolute Error")
+plt.xticks(epochs)
+plt.plot(val_loss)
+
+R2_scr = r2_score(Y_max * Y_test, Y_max * approximated_energy)
+
+plt.figure(figsize=(10,10))
+plt.title("Linear fit", size= 20)
+plt.xlabel("Energies from a test set [kcal / mole]", size=20)
+plt.ylabel("Predicted energies [kcal / mole]", size=20)
+plt.annotate(f"R2 score is {R2_scr}", (-1800.0, -800), size=20)
+
+
+sns.regplot(Y_test * Y_max, approximated_energy * Y_max, marker="o", scatter_kws={'s':2})
+
+plt.figure(figsize=(10, 10))
+plt.scatter(approximated_energy * Y_max, (approximated_energy - Y_test.reshape(1075, 1)) * Y_max, c='steelblue', marker='o', edgecolor='white', label='Test data')
+plt.xlabel("Approximated energies [kcal / mole]", size=30)
+plt.ylabel("Residuals", size=30)
+plt.title("Residual plot of approximated energies", size=30)
+plt.hlines(y=0, xmin= -2100.0, xmax= 0.0, color='red', lw=5)
+#plt.xlim([-1.0, -0.20])
+
+
+
 \end{verbatim}
 
 \printbibliography[
