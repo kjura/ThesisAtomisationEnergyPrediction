@@ -28,7 +28,12 @@
 
 \usepackage[section]{placeins}
 
+%\usepackage{listings}
+\lstset{
+   breaklines=true}
+   %basicstyle=\ttfamily}
 
+\usepackage{placeins}
 
 
 %
@@ -150,7 +155,7 @@
 
 \section{Aim of the thesis}
 
-This thesis is focused on showing that using machine learning, we can build an AI-based regression model that can predict the quantum parameters of chemical compounds. We will focus on the prediction of the atomization energies, but the method is versatile and it can be used to predict other parameters (e.g molecular spectra). The author will show how algorithm reaches convergence on a plot with respect to its errors as well as compare real calculated values to the predicted ones showing how well the AI learns the energies from matrices.
+This thesis is focused on showing that using machine learning, we can build an AI-based regression model that can predict the quantum parameters of chemical compounds. We will focus on the prediction of the atomization energies, but the method is versatile and it can be used to predict other parameters (e.g molecular spectra). The author will check convergence and error estimates of the algorithm  as well as compare real calculated values to the predicted ones showing how well the AI learns the energies from matrices.
 
 \section{Scope of the thesis}
 
@@ -158,44 +163,51 @@ The thesis is organized as follows: The first part will describe the necessary t
 
 \section{Methodology}
 
-The Python's library - Keras -  will be used to achieve the results in training the AI. The whole implementation will be based on a dataset that contains Coulomb matrices of molecules as well as atomization energies of these molecules. 
+Keras - a library for machine learning in Python -  will be used to achieve the results in training the AI. The whole implementation will be based on a dataset that contains Coulomb matrices of molecules as well as atomization energies of these molecules. 
 
 
 \part{Theoretical part}
 
 \chapter{Introduction}
 
-Machine learning (often shortcutted to ML) is a concept that has emerged recently in mainstream media but has been in use long before the nowadays supercomputers and information technology development. It is the study of application and science of algorithms that make sense of data. We live in a very fast times, where billions of data are handled each day so it was necessary to build a set of tools that could give us answers to patterns in those large data chunks. Machine learning exists in our everyday lives, even if sometimes we don't necessarily see it immediately. Machine learning has vast number of applications e.g spam filetering, navigating, personal assistant with voice commands and chess engines.
+Machine learning (often shortcutted to ML) is a concept that has emerged recently in mainstream media but has been in use long before nowadays supercomputers and information technology development. It is the study of application and science of algorithms that make sense of data. We live in very fast times, where billions of data are handled each day so it was necessary to build a set of tools that could give us answers to patterns in those large data chunks. Machine learning exists in our everyday lives, even if sometimes we don't necessarily see it immediately. Machine learning has a vast number of applications e.g. spam filtering, navigating, personal assistant with voice commands and chess engines.
 
-We can actually be more precise and give more general definition \cite{aurelion}: "Machine Learning is the field of study that gives computers the ability to learn without being explicitly programmed". One can reduce the abstraction of the term to give a slightly practical definition of this (ML) science: "A computer program is said to learn from experience E with respect to some task T and some performance measure P, if its performance on T, as measured by P, improves with experience E."
+We can actually be more precise and give more general definition \cite{aurelion}: "Machine Learning is the field of study that gives computers the ability to learn without being explicitly programmed". One can reduce the abstraction of the term to give a slightly practical definition of this (ML) science: 'A computer program is said to learn from experience E with respect to some task T and some performance measure P, if its performance on T, as measured by P, improves with experience E.'\cite{aurelion}
 
 It was not then a big surprise that machine learning methods gained a lot of popularity in Physics, mainly because more and more physicists started to see that ML can help them solve some scientific problems. Physics itself is highly connected with statistical methods of learning starting from the field of Statistical Mechanics and ending on collecting experimental data. Machine learning methods have helped physicists to provide many answers by examining high-dimensional data in a different way that it had been made before. Physicists equipped with ML algorithms are able to extract information from large amounts of data  that they generate in simulations or experiments. Then they discover physical principles and underlying patterns in this data so they can predict how the natural phenomena can be modelled and explained. \cite{ucla}
 
 
 
-This thesis is focused on showing that using certain techniques from machine learning, we can build an AI-based regression model that will allow us to predict the atomization energies of molecules. The author will show and describe how a neural network - a subfield of machine learning - can obtain useful results that emerge from representing the molecules using concept called Coulomb's matrix. The method that will be shown is flexible enough to predict other parameters e.g molecular spectra.
+This thesis is focused on showing that using certain techniques from machine learning, we can build an AI-based regression model that will allow us to predict the atomization energies of molecules. The author will show and describe how a neural network - an object within the subfield of ML - can obtain useful results on quantum properties of molecules, specifically their atomization energy, using Coulomb's matrix. The method should predict other parameters e.g. molecular spectra.
 
 \chapter{Quantum mechanics and chemical compounds}
 
 \section{Quantum mechanics}
 
-When Isaac Newton prepared his first experiments to study the nature of light between the XVII-XVIII century he concluded one thing that he took for certain: Light is made up of tiny particles called ‘corpuscles’ having negligible mass. Newton had so much authority that he completely overwhelmed Christiaan Huygens's wave approach to light. The consequence of Newton's domination was that Huygen's idea was not much popular and sometimes it was visibly negated. In the beginning of the XIX century, Augustin-Jean Fresnel and Thomas Young made their famous and groundbreaking experiments: difraction and interference. Those two concepts definitely help to stop praising Newton's idea about light and scientific community started accepting wave description of light. Fresnel developed Huygens' theory and as a consequence, he helped to make wave theory of light more common. In the second half of XIX century, James Clerk Maxwell discovered that it is possible to derive the wave equation describing light from electromagnetism. Heinrich Hertz's experiments basically finished a fundamental studies of light. There was one concept that was really hard to comprehend for Physicists in the end of the XIX century. Wilhelm Wien in 1889 and Lord Rayleigh in 1900 tried to provide theoretical explanations of the blackbody spectrum. An idealized blackbody is a material object that absorbs all of the radiation falling on it. As it turned out, the Wien's formula gave correct predictions for high-frequency data but it miserably failed fitting for low frequencies. On the other hand, Rayleigh's attempt was correct except for low frequencies. Those results were so profound that that history gave this phenomenon its own name: The ultraviolet catastrophe.
+When Isaac Newton prepared his first experiments to study the nature of light between the XVII-XVIII century he concluded one thing that he took for certain: Light is made up of tiny particles called ‘corpuscles’ having negligible mass. Newton had so much authority that he completely overwhelmed Christiaan Huygens's wave approach to light. The consequence of Newton's domination was that Huygen's idea was not much popular and sometimes it was visibly negated. In the beginning of the XIX century, Augustin-Jean Fresnel and Thomas Young made their famous and groundbreaking experiments: difraction and interference. Those two concepts definitely help to stop praising Newton's idea about light and scientific community started accepting wave description of light. Fresnel developed Huygens' theory and as a consequence, he helped to make wave theory of light more common. In the second half of XIX century, James Clerk Maxwell discovered that it is possible to derive the wave equation describing light from electromagnetism. Heinrich Hertz's experiments basically finished a fundamental studies of light. There was one concept that was really hard to comprehend for Physicists in the end of the XIX century. Wilhelm Wien in 1889 and Lord Rayleigh in 1900 tried to provide theoretical explanations of the blackbody spectrum. An idealized blackbody is a material object that absorbs all of the radiation falling on it. As it turned out, the Wien's formula gave correct predictions for high-frequency data but it miserably failed fitting for low frequencies. On the other hand, Rayleigh's attempt was correct except for low frequencies. Those results were so profound that history gave this phenomenon its own name: The ultraviolet catastrophe.
 
-In the 1900, Max Planck gave corrections to theoretical model for black body radiator. He had to revolutionize the whole theory by introducing a concept of light quanta - photons. Thanks to light quanta postulate, the correct formula for a black body could be derived such that it was coherent with experimental data. In the 1905, Albert Einstein used Planck's concept of a photon (light corpuscule) to explain photoelectric effect which gave him a Nobel Prize. In 1924, Arthur Compton made his famous scattering experiment which proved that light can act as a stream of corpuscules. The idea of wave-particle duality was slowly beginning to born. Light in some cases behaves like electromagnetic wave with angular frequency $\omega$ and wave vector $\textbf{k}$. But it can also behave differently when it interacts with matter, it behaves like a stream of particles, photos to be precis and for an electromagnetic wave with frequency $\nu = \frac{\omega}{2 \pi}$ and length $\lambda = \frac{c}{\nu}$ the following relations hold:
+In the 1900, Max Planck gave corrections to theoretical model for black body radiator. He had to revolutionize the whole theory by introducing a concept of light quanta - photons. Thanks to light quanta postulate, the correct formula for a black body could be derived such that it was coherent with experimental data. In the 1905, Albert Einstein used Planck's concept of a photon (light corpuscule) to explain photoelectric effect which gave him a Nobel Prize. In 1924, Arthur Compton made his famous scattering experiment which proved that light can act as a stream of corpuscules. The idea of wave-particle duality was slowly beginning to born. Light in some cases behaves like electromagnetic wave with angular frequency $\omega$ and wave vector $\textbf{k}$. But it can also behave differently when it interacts with matter, it behaves like a stream of particles, photons to be precise and for an electromagnetic wave with frequency $\nu = \frac{\omega}{2 \pi}$ and length $\lambda = \frac{c}{\nu}$ the following relations hold:
+
+\begin{itemize}
+    \item $E$ - energy of photon;
+    \item $h$ - Planck's constant, $6.62607015 \cdot 10^{-34} \cdot J \cdot (Hz)^{-1}$;
+    \item $\nu$ - electromagnetic frequency;
+    \item $\hbar$ - reduced Planck's constant
+    \item $\omega$ - angular frequency of electromagnetic wave
+    \item $p$ - momentum of a particle (magnitude)
+    \item $k$ - wavenumber
+    \item $\pi$ - mathematical constant
+\end{itemize}
 
 \begin{equation}
     E = h \nu = \hbar \omega,
 \end{equation}
 
 \begin{equation}
-    \textbf{p} = \hbar \textbf{k},
+    p = \hbar k,
 \end{equation}
 
-where $k = \frac{2 \pi}{\lambda}$. Those relations are nothing but Louis de Broglie's hypothesis.\cite{kryszewski} In the above equations $\hbar$ is the Planck constant:
-
-\begin{equation*}
-    h =  6.62607015 \cdot 10^{-34} J Hz^{-1}.
-\end{equation*}
+where $k = \frac{2 \pi}{\lambda}$. Those relations are nothing but Louis de Broglie's hypothesis.\cite{kryszewski}.
 
 The quantity of $\frac{h}{2 \pi}$ appears in Quantum Mechanics frequently so we almost always work with $\hbar$ defined as follows:
 
@@ -203,15 +215,14 @@ The quantity of $\frac{h}{2 \pi}$ appears in Quantum Mechanics frequently so we 
     \hbar = \frac{h}{2 \pi}.
 \end{equation*}
 
-
 \subsection{The Schrödinger equation}
 
 Every physical theory is based on a set of postulates, they are the nature's laws, they cannot be derived from other principles because they are indeed fundamental in their own nature. They can presented on a mathematical level as axioms e.g Newton's laws of motion and Maxwell's equations in Electrodynamics. Both of those sets of laws are the nature's laws. They have been verified by numerous experiments and daily usage.
 
-In classical mechanics, physical state is described by generalized momenta and positions. In the case of only one particle, we have the position vector $\textbf{x}_{clas}(t)$ and momentum vector  $\textbf{p}_{clas}(t)$. The generalized momenta and position vectors give us the definite trajectory of a particle. When we come to the microscopic world, every clasical idea or law is not revelant to describe anything that happens on a microscale. But we can actually use de Broglie's hypothesis to deduce what is the behaviour of a particle in a microworld. De Broglie's hypotheiss tells us that to every particle with energy $E$ and momentum $\textbf{p}$  we assign a wave with angular frequency $\omega = 2 \pi \nu$ and wave vector $\textbf{k}$ that obey relationships (2.1) and (2.2). The wavelength is related to wave vector with:
+In classical mechanics, physical state is described by generalized momenta and positions. In the case of only one particle, we have the position vector $\textbf{x}_{clas}(t)$ and momentum vector  $\textbf{p}_{clas}(t)$. The generalized momenta and position vectors give us the definite trajectory of a particle. When we come to the microscopic world, every classical idea or law is not relevant to describe anything that happens on a microscale. But we can actually use de Broglie's hypothesis to deduce what is the behaviour of a particle in a microworld. De Broglie's hypothesis tells us that to every particle with energy $E$ and momentum $p$  we assign a wave with angular frequency $\omega = 2 \pi \nu$ and wavenumber $k$ that obeys relationships (2.1) and (2.2). The wavelength is related to wavenumber with:
 
 \begin{equation}
-    \lambda = \frac{2 \pi}{\textbf{k}} = \frac{2 \pi \hbar}{\textbf{p}} = \frac{h}{\textbf{p}}.
+    \lambda = \frac{2 \pi}k = \frac{2 \pi \hbar}{p} = \frac{h}{p}.
 \end{equation}
 
 Now focusing on a single particle and following de Broglie we accept below postulate:
@@ -224,10 +235,9 @@ Let us briefly recall some statements about the wave function:
 
 
 \begin{itemize}
-    \item Vector $\textbf{r}$ should not be familiarize with the position of a particle.
-    \item The wave function can also be a function of other parameters. This fact is dependent on the type of physical system we want to describe.
-    \item The wave function is a field, i.e., complex valued function of space and time.
-    \item The wave function has to be normalizable, it describes the probability of finding a particle in some point in space. In the language of abstract vector spaces this means that $\psi(\textbf{r}, t) \in \textbf{L}^{2}$\cite{L2}. The $\textbf{L}^{2}$ space implies that $\psi$ has to obey normalization condition: $\int_{-\infty}^{\infty} \lvert \psi(x, t) \rvert^{2}dx = 1$ because the particle has to be found somewhere.  
+    \item The wave function can also be a function of other parameters. This relation is dependent on the type of physical system we want to describe.
+    \item The wave function is a field, i.e., complex valued function of space ($\textbf{r}$) and time ($t$).
+    \item The wave function has to be normalizable, it describes the probability of finding a particle in some point in space. In the language of abstract vector spaces this means that $\psi(\textbf{r}, t) \in \textbf{L}^{2}$\cite{L2}. The $\textbf{L}^{2}$ space implies that $\psi$ has to obey normalization condition: $\int_{-\infty}^{\infty} \lvert \psi(x, t) \rvert^{2}dx = 1$. 
 \end{itemize}
 
 When we will accept the above postulate and its consequences then we can proceed to unravel the fundamental equation of non-relativistic Quantum Mechanics: 
@@ -248,22 +258,23 @@ The above equation is credited to Erwin Schrödinger. We construct the following
     \hat{H} = - \frac{\hbar^2}{2m}\nabla^{2} + V(\textbf{r}, t),
 \end{equation}
 
+\noindent
 where $\hat{H}$ is Hamilton's operator also known as Hamiltonian. It is produced by substituting in the classical hamiltonian, momentum with momentum operator, namely:
 
-\begin{equation*}
-    -i \hbar \nabla \rightarrow \overrightarrow{\textbf{p}}
-\end{equation*}
-
-
-
-Then we can write Schrödinger equation in a more compact form:\cite{kryszewski}
-
 \begin{equation}
-    i \hbar \frac{\partial}{\partial t} \psi(\textbf{r}, t) = \hat{H} \psi(\textbf{r}, t),
+    -i \hbar \nabla \rightarrow \overrightarrow{\textbf{p}}.
 \end{equation}
 
 
-Just as was mentioned, the above equation allows us to find any quantum physical state (assuming non-relativistic limit). It is not a surprise then that this equation carries a great value to atomic structures and grant us knowledge about energies of molecules. If we are examining states for which the phase dependency is presented as $\exp{[iEt]}$ and we substitute this formula to (1.6), then we obtain the equation for eigenvalues of a Hamiltonian i.e $E$ which we interpret as the energies of a system.
+
+Then we can write Schrödinger equation in a more compact form\cite{kryszewski}:
+
+\begin{equation}
+    i \hbar \frac{\partial}{\partial t} \psi(\textbf{r}, t) = \hat{H} \psi(\textbf{r}, t).
+\end{equation}
+
+
+Just as was mentioned, the above equation allows us to find any quantum physical state (assuming non-relativistic limit). It is not a surprise then that this equation (to be precise: Schrödinger equation for multi-particle systems) carries a great value to atomic structures and grant us knowledge about energies of molecules. If we are examining states for which the phase dependency is presented as $\exp{[iEt]}$ and we substitute this formula to (2.5), then we obtain the equation for eigenvalues of a Hamiltonian i.e $E$ which we interpret as the energies of a system.
 
 \section{Chemical compounds}
 
@@ -272,9 +283,16 @@ The atoms - in all substances that contain multiple atoms - are held together by
 
 \subsection{Coulomb matrix}
 
-Coulomb matrices (CM) was first proposed in \cite{rupp} as a simple global descriptor of molecules. We can treat CM as mimicking the electromagnetic interaction between nuclei. To calculate Coulomb matrices for some molecule we use the formula below:
+Coulomb matrices (CM) were first proposed in \cite{rupp} as a simple global descriptor of molecules. We can treat CM as mimicking the electromagnetic interaction between nuclei. To calculate Coulomb matrix for some molecule we use the formula below:
+
+\begin{itemize}
+    \item $CM_{ij}$ - (i, j) element of a Coulomb matrix;
+    \item $Z_{i}$ - nuclear charge of $i$th atom;
+    \item $R_{ij}$ represents the distance between atom $i$ and $j$;
+\end{itemize}
 
 \begin{equation}
+CM_{ij} =
 \begin{cases} 
 0.5 \cdot Z_{i}^{2.4} & \text{dla } i = j, \\
 
@@ -282,8 +300,8 @@ Coulomb matrices (CM) was first proposed in \cite{rupp} as a simple global descr
 \end{cases}
 \end{equation}
 
-$R_{ij}$ represents cartesian coordinates of the atoms.
-The diagonal entries are essentialy interactions of an atom with itself, they are a polynomial fit of the atomic energies to the nuclear charge $Z_i$. To visualize this concept better, let us take a closer look at methanol and try to calculate its Coulomb Matrix:
+\noindent
+The diagonal entries are essentially interactions of an atom with itself, they are a polynomial fit of the atomic energies to the nuclear charge $Z_i$. To visualize this concept better, we present the Coulomb Matrix of methanol below read from \cite{CMy}:
 
 \begin{figure}[h]
 \centering
@@ -308,7 +326,7 @@ As we know, the building atoms of methanol are four atoms of hydrogen, one carbo
 
 \subsection{Atomization energy and enthalpy of atomization}
 
-Atomization energy is the quantity that accompanies the total separation of all atoms in a chemical substance (either a chemical compound or a chemical element). It is related to a physico-chemical parameter known as enthalpy of atomization which is the enthalpy change of the total seperation of the atoms. It is often represented by the symbol $\Delta H_{at}$. The associated standard enthalpy is known as standard enthalpy of atomization in units of $\frac{kJ}{mol}$ at 289 K and 1 atmosphere of pressure.
+Atomization energy is the quantity that accompanies the total separation of all atoms in a chemical substance (either a chemical compound or a chemical element). It is related to a physico-chemical parameter known as enthalpy of atomization which is the enthalpy change of the total seperation of the atoms. It is often represented by the symbol $\Delta H_{at}$. The associated standard enthalpy is known as standard enthalpy of atomization in units of $\frac{kJ}{mol}$ at 289 K and 1 $atm$ of pressure.
 
 Below is the short description of how one can calculate the atomization energy of a given molecule:
 
@@ -322,17 +340,17 @@ Below is the short description of how one can calculate the atomization energy o
 
 % https://www.polymersolutions.com/blog/what-is-spectroscopy/
 
-The term spectroscopy is used to describe tools of analytical techniques in which a range of frequencies is applied to matter to obtain spectra of these materials in a form of a graph. The spectra of a matter of interest are gathered by the relationship of frequencies of electromagnetic waves with the matter. Comparing the difference spectra allows the pinpointing of differences between them. Spectroscopy methods allow us to study the structure of a matter in a noninvasive way. We can use machines that grant us precise results e.g IR spectroscopy \cite{maszyny}, but as an alternative let us see what can the topic of artificial intelligence give us in the long term.
+The term spectroscopy is used to describe tools of analytical techniques in which a range of frequencies is applied to matter to obtain spectra of these materials in a form of a graph. The spectra of a matter of interest are gathered by the relationship of frequencies of electromagnetic waves with the matter. By comparing the spectra of two molecules we can distinguish them. Spectroscopy methods allow us to study the structure of a matter in a noninvasive way. Instead of using spectrometers to obtain, e.g., IR spectra, we provide an ML approach that does not involve such complex apparatus.
 
 \chapter{Machine learning and its principle of working}
 
 
 \section{Artificial intelligence}
 
-In 1950 Alan Turing started wondering: "Can a machine think like a human?". He laid out the fundamental idea and redefine a question for it to become much easier to precise in a language of machines, namely:"Can a machine imitate and convince other human being that it is also a human?". This question has become a really important idea known as Turing's Test. A human judge asks questions to a person or a machine in the next room. If the machine can convince the judge that it is indeed the human, the machine passes this test. In 1943 Warren McCulloch and Walter Pitts studied how the biological brain works, they proposed the first concept of a simplified brain cell, McCulloch-Pitts (MCP) neuron. Biological neurons create a network of interconnected nerve cells and they use them to send electrical and chemical signals so there is a clear input and a binary output for those signals.\cite{neuron}
-The AI research officially started in 1956 at the Dartmouth Conference where a term "artificial intelligence" was created. It was necessary to combine efforts in cybernetics, automata theory, and complex information processing in order to study how can machines think.\cite{histAI}
+In 1950 Alan Turing started wondering: "Can a machine think like a human?". He laid out the fundamental idea and redefine a question for it to become much easier to precise in a language of machines, namely:"Can a machine imitate and convince other human being that it is also a human?". This question has become a really important idea known as Turing's Test. A human judge asks questions to a person or a machine in the next room. If the machine can convince the judge that it is indeed the human, the machine passes this test. In 1943 Warren McCulloch and Walter Pitts studied how the biological brain works, they proposed the first concept of a simplified brain cell, McCulloch-Pitts (MCP) neuron. Biological neurons create a network of interconnected nerve cells and they use them to send electrical and chemical signals so there is a clear input and a binary output for those signals \cite{neuron}.
+The AI research officially started in 1956 at the Dartmouth Conference where a term "artificial intelligence" was created. It was necessary to combine efforts in cybernetics, automata theory, and complex information processing in order to study how machines can think.\cite{histAI}
 
-In 1958, there was some kind of - as was being thought that time -  effort made by Frank Rosenplatt.He published the first concept of the perceptron learning rule based on the MCP neuron model. His proposition of an algorithm was simple, the weight coefficients are multipled by features and the decision is made, the neuron either fires or it doesn't.\cite{raschka}. This gave the birth of certain techniques that are called machine learning.
+In 1958, there was some breakthrough made by Frank Rosenplatt. He published the first concept of the perceptron learning rule based on the MCP neuron model. His proposition of an algorithm was simple, the weight coefficients are multiplied by features and the decision is made, the neuron either fires or it doesn't.\cite{raschka}. This gave the birth of study about neural networks.
 
 
 \begin{figure}[h!]
@@ -345,7 +363,8 @@ In 1958, there was some kind of - as was being thought that time -  effort made 
 
 \section{Machine learning}
 
-Algorithms that are trained in machine learning have a major goal: given the massive amounts of data an algorithm has to find patterns and connections in the features in order to make a decision or a prediction. If the choice of an algorithm is suitable enough for a given problem then the algorithm will learn better and will give more accurate predictions. Nowadays, it is hard to not experience machine learning around us every day. Powerful recommendation systems are built using ML models when we search for a song that seems interesting to us. Voice assistants can make a call or schedule a meeting if we tell them to do so. Vacuum cleaners learn all the paths to become optimiezd for cleaning. It is harder and harder for spam to land on our e-mail box. Medicians use image analysis sytems to make a precise diagnosis. Not to mention the rise of self-driving cars which can move us from point A to point B without our interuption. 
+Algorithms that are trained in machine learning have a major goal: 
+put the data into machine learning algorithm and train it until it starts to see connection between features and it learns to group them among themselves. There are many possible algorithms that can give accurate predicitions but we are interested with one that will give the best predicitions. That is why we have to use validation methods to measure how well given ML algorithm performs. This way, we can compare different algorithms that we consider for a given problem and then choose the one that is optimal for our task. Nowadays, it is hard to not experience machine learning around us every day. Powerful recommendation systems are built using ML models when we search for a song that seems interesting to us. Voice assistants can make a call or schedule a meeting if we tell them to do so. Vacuum cleaners learn all the paths to become optimiezd for cleaning. It is harder and harder for spam to land on our e-mail box. Medicians use image analysis sytems to make a precise diagnosis. Not to mention the rise of self-driving cars which can transport us from point A to point B without the need to manually steer the vehicle. 
 
 
 \section{Types of machine learning}
@@ -381,7 +400,7 @@ To be able to build a machine learning model one can summarize the idea in below
 
 \subsubsection{Selection and preprocessing of a dataset}
 
-Every machine learning model should have a dataset that will be split into two parts: the training set and the testing set. The training set is necessary in order for a model to learn from its mistakes. The test set is used to see how well the model predicts values of interest. Depending on the dataset, it can be labeled, meaning that it has "tags" which combined with certain features can give us solid outputs, other times the data is unlabeled, meaning that the model will have to extract the hidden patterns from the features itself.
+Every machine learning model should have a dataset that will be split into two parts: the training set and the testing set. The training set is necessary in order for a model to learn from its mistakes. The test set is used to see how well the model predicts values of interest. Depending on the dataset, it can be labeled, meaning that it has 'tags' which combined with certain features can give us solid outputs, other times the data is unlabeled, meaning that the model will have to extract the hidden patterns from the features itself.
 
 \subsubsection{Categorical and numerical data}
 
@@ -431,9 +450,9 @@ The choice of an algorithm that is going to learn depends on a problem. If we ha
 When we have to deal with unlabeled data we can use for example:
 
 \begin{itemize}
-    \item Clustering algorithms:Clustering focuses on identifying groups of similar records and labeling the records according to the group to which they belong. This is done without prior knowledge about the groups and their characteristics using e.g k-means algorithm
-    \item Association algorithms:Association algorithms find patterns and relationships in data and identify frequent ‘if-then’ relationships called association rules.
-    \item Neural networks:  A deep neural network defines a network with multiple hidden layers, each of which successively refines the results of the previous layer. 
+    \item Clustering algorithms: Clustering focuses on identifying groups of similar records and labeling the records according to the group to which they belong. This is done without prior knowledge about the groups and their characteristics using e.g k-means algorithm
+    \item Association algorithms: Association algorithms find patterns and relationships in data and identify frequent ‘if-then’ relationships called association rules.
+    \item Neural networks: A deep neural network defines a network with multiple hidden layers, each of which successively refines the results of the previous layer. 
 \end{itemize}
 
 \subsubsection{Metric}
@@ -452,6 +471,7 @@ and often mean squared error (MSE):
 \end{equation}
 
 
+\noindent
 where $y_j$ represents the original value and $\hat{y}_j$ represents prediction by a machine learning algorithm.
 
 
@@ -463,7 +483,7 @@ Once all the data is prepared and methodology is chosen, we put variables with t
 
 \subsection{Model usage and its improvement}
 
-After the training iterations are done, we can test our trained model on a subset of data that we have put to the test set. If we see that our predictions have a large error we have to optimize parameters again and adjust the model again. Sometimes this step means to go back to square one and set new parameters for learning. Below figure can briefly summarise the whole process:
+After the training iterations are done, we can test our trained model on a subset of data that we have put to the test set. If we see that our predictions have a large error we have to optimize parameters again and adjust the model again. Sometimes this step means to go back to the first step and set new parameters for learning. Below figure can briefly summarise the whole process:
 
 \begin{figure}[h]
 \centering
@@ -476,7 +496,7 @@ After the training iterations are done, we can test our trained model on a subse
 
 \section{Artificial neural networks}
 
-Artificial neural networks are built on top of artificial neurons. They are inspired by the networksof biological neurons found in our brains. Deep learning is a science that investigates various constructions of
+Artificial neural networks are built on top of artificial neurons. They are inspired by the network of biological neurons found in our brains. Deep learning is a science that investigates various constructions of
 artificial neural networks. They vary from one model to the other, they are efficacious and can be scaled to face hard machine learning problems such as classyfing a large dataset of images (we can think of something like Google Images), controlling speech recognition services (Google Assistant, Apple's Siri, Amazon Alexa), recommending user his favourite movies on Youtube platform or beating an opponent in a chess game.\cite{aurelion}\cite{DeepLearningChess}. It is valuable to stop for a second and to really think why the interest in artificial neural networks will have a huge impact in the nearby future: 
  
 \begin{itemize}
@@ -543,11 +563,11 @@ The negative threshold is often called the bias unit.\cite{raschka}
 The whole idea of a learning rule for perceptron can be summarised in a simple manner:
 
 \begin{enumerate}
-    \item First, generate random numbers for weights or initialize weights as $0$ from the start
+    \item First, generate weights randomly;
     \item For every training example $\textbf{x}^{(i)}$:
     \begin{itemize}
-        \item Compute the output value $\hat{{y}}$ 
-        \item Update the weights according to update rule
+        \item Compute the output value $\hat{{y}}$ ;
+        \item Update the weights according to update rule;
     \end{itemize}
 \end{enumerate}
 
@@ -555,7 +575,7 @@ The whole idea of a learning rule for perceptron can be summarised in a simple m
 
 To understand the concept of multilayer neural networks let us begin with simple single layer neural network to show from first principles how a neural network behaves on its fundamental level. One can treat Perceptron as a single layer neural network. In this section we will extend the notion of Perceptron, an improvement called Adaline (ADAptive LInearNEuron) published by Bernard Widrow and his doctoral student Tedd Hoff \cite{adaline}.
 
-The main difference between Rosenblatt's perceptron learning rule and Adaline is the update of weights. The weights are updated using a linear function also called activation function ( crucial concept for deep learning methods) instead of being updated by a unit step function. The activation function in Adaline is written as $\phi(z)$ which is just:
+The main difference between Rosenblatt's perceptron learning rule and Adaline is the update of weights. The weights are updated using a linear function also called activation function (crucial concept for deep learning methods) instead of being updated by a unit step function. The activation function in Adaline is written as $\phi(z)$ which is just:
 
 
 \begin{equation}
@@ -566,26 +586,27 @@ However, the algorithm still needs  a threshold function to predict the final ou
 
 \section{The Multilayer Perceptron and Backpropagation}
 
-A multilayer perceptron is created with one input layer, one or more layers of threshold logic unit (a logic unit that computes a weighted sum of its inputs $z$ and then applies a step function to that sum to make a prediction) called hidden layers, and one end layer called the output layer. If an ANN is built with a deep stack of hidden layers, it is called a deep neural network (DNN). It was a problem for many researchers to find a way to train multilayer perceptron. In 1986, Rumelhart, Hinton and Ronald published their paper \cite{rumelhart1985learning} where they introduced the concept of backpropagation training algorithm which is nowadays used on a regular basis. It is the combination of Gradient Descent and a concept of automatic differentiation - automatical computing of gradients.
+A multilayer perceptron is created with one input layer, one or more layers of threshold logic unit (a logic unit that computes a weighted sum of its inputs $z$ and then applies a step function to that sum to make a prediction) called hidden layers, and one end layer called the output layer. If an ANN is built with a deep stack of hidden layers, it is called a deep neural network (DNN). It was a problem for many researchers to find a way to train multilayer perceptron. In 1986, Rumelhart, Hinton and Ronald published their paper \cite{rumelhart1985learning} where they introduced the concept of backpropagation training algorithm which is nowadays used on a regular basis. It is the combination of Gradient Descent Method and a concept of automatic differentiation - automatical computing of gradients.
 
 
 \subsection{Gradient Descent}
 
-Main problem for a machine learning algorithm is a defined objective function which we want to optimize while the algorithm is training. This objective function is often a cost function subject to mathematical programming of minimization. Let us define the cost function $J$, to learn the weights as the sum of squared errors (SSE):
+Main problem for a machine learning algorithm is a defined objective function which we want to optimize while the algorithm is training. This objective function is often a cost function subject to minimization procedure. Let us define the cost function $J$, to learn the weights as the sum of squared errors (SSE):
 
 \begin{equation}
     J(\textbf{w}) = \frac{1}{2}\sum_{i}^{}(y^{i} - \phi(z^{(i)}))^{2}.
 \end{equation}
 
-In comparison to the single layer perceptron, this cost function is differentiable and it is convex. All these implies that we can use a powerful algorithm called gradient descent that we can conceptually visualize in the below picture:
+In comparison to the single layer perceptron, this cost function is differentiable and it is convex. All these implies that we can use a powerful algorithm called gradient descent that we can conceptually visualize in figure ~\ref{GradientPlot}:
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.15]{DocumentFigures/MyFigures/MyGradientDescent.png}
 \caption{Gradient descent \cite{gradient}}
+\label{GradientPlot}
 \end{figure}
 
-After each iteration we want to go in the opposite direction of the gradient, where the step size is coming from the learning rate and the slope of the function. The rule of weight update is:
+After each iteration we want to go in the in the direction of descent pointed out by the gradient of $J$, where the step size is coming from the learning rate and the slope of the function. The rule of weight update is:
 
 \begin{equation}
     \textbf{w} := \textbf{w} + \Delta \textbf{w},
@@ -611,7 +632,7 @@ Now let us quickly derive the gradient descent for SSE \cite{raschka}:
 
 \subsection{Stochastic Gradient Descent}
 
-If we have a large piles of data it is hard to use Gradient Descent especially because it can be computationally heavy to reevaluate the whole training dataset each time we take a step toward the global minimum.
+If we have a large piles of data it is hard to use Gradient Descent Method especially because it can be computationally heavy to reevaluate the whole training dataset each time we take a step toward the global minimum.
 
 There is a popular alternative for GD, Stochastic Gradient Descent, sometimes also called iterative or online gradient descent. The difference is this: Instead of updating the weights based on the sum of the accumulated errors over all training examples , $\textbf{x}^{(i)}$:
 
@@ -706,7 +727,7 @@ Activation functions are used to decide if a neuron should be activated or not. 
 
 \section{Software tools}
 
-This section's purpose is solely to show what types of tools where used when writing the implementation of a theory. First we will describe Python programming language and its momentum in the world of science and then we will give some details about libraries that were used in a code.
+The purpose of this section is to show what types of tools where used when writing the implementation of a theory. First we will describe Python programming language and its momentum in the world of science and then we will give some details about libraries that were used in a code.
 
 \subsection{Python }
 
@@ -727,7 +748,7 @@ NumPy \cite{numpy} is a library made for scientific computing in Python. It prov
 
 \subsection{Keras}
 
-Keras \cite{Keras} is an API (Application Programming Interface) written in Python for a much popular machine learning platform - TensorFlow. It gives a kind of interface for TensorFlow to quickly and accurately implement ideas and machine learning solutions. It was created with a concept of fast experimentations on data in opposite to TensorFlow which gives much more power to a user in developing highly efficent algorithms. We can think of Keras as a higher layer of TensorFlow: It gives us specific tools and options to quickly create and develop a model using exceptionally fast and powerful iterations of automatic differentiation. Keras can be run on TPU (Tensor Processing Unit) or on large clusters of GPUs (Graphics Processing Unit) and it supports exports to run models in a browser or on a mobile device. The structure of Keras is divided between layers and models. The simplest type of model is the Sequential model, a linear stack of layers. 
+Keras \cite{Keras} is an API (Application Programming Interface) written in Python for a much popular machine learning platform - TensorFlow \cite{tf}. It gives a kind of interface for TensorFlow to quickly and accurately implement ideas and machine learning solutions. It was created with a concept of fast experimentations on data in opposite to TensorFlow which gives much more power to a user in developing highly efficent algorithms. We can think of Keras as a higher layer of TensorFlow: It gives us specific tools and options to quickly create and develop a model using exceptionally fast and powerful iterations of automatic differentiation. Keras can be run on TPU (Tensor Processing Unit) or on large clusters of GPUs (Graphics Processing Unit) and it supports exports to run models in a browser or on a mobile device. The structure of Keras is divided between layers and models. The simplest type of model is the Sequential model, a linear stack of layers. 
 
 \subsection{TensorFlow}
 
@@ -763,9 +784,9 @@ The SciPy \cite{scp} library is one of the core packages that make up the SciPy 
 Matplotlib \cite{mpl} \cite{Hunter:2007} is a library for making fully customized plots in Python either 2D or 3D. Although historically the library was written purely in Python, nowadays it is fully equiped with NumPy vectorized arrays. This combination assures that bars, plots, charts, animations, etc. can always be handled despite of relatively large data chunks. In just a few lines of code one can simply code a clear and concise plots or he/she can experiment with richness of modules, functions and classes to present fancy architectures. The architecure of Matplotlib is roughly divided in three parts:
 
 \begin{itemize}
-    \item he pylab interface is the set of functions provided by matplotlib.pylab which allow the user to create plots;
-    \item he set of classes that do the heavy lifting, creating and managing figures, text, lines, plots and so on;
-    \item he backends are device-dependent drawing devices, aka renderers, that transform the frontend representation to hardcopy or a display device;
+    \item the pylab interface is the set of functions provided by matplotlib.pylab which allow the user to create plots;
+    \item the set of classes that do the heavy lifting, creating and managing figures, text, lines, plots and so on;
+    \item the backends are device-dependent drawing devices, aka renderers, that transform the frontend representation to hardcopy or a display device;
 \end{itemize}
 
 
@@ -783,17 +804,99 @@ Pandas \cite{pandas} is an open source data analysis and manipulation tool, buil
 
 \section{Dataset}
 
-The dataset that has been used in implementation of a network was taken from \cite{dataset}.The whole credit of using this data goes to \cite{blum} \cite{rupp}. It is a subset of a much broader data set, namely GDB-13 which contains close to one billion stable and synthetically accessible organic molecules. It is important to note that QM7 dataset has molecules that do not exceed 23 atoms in accordance to their structure. The whole dataset has 7165 molecules with their Coulomb's matrices calculated beforehand. The atomization energies are in SI units of kcal/mole in the range between $-800$ to $-2000$ kcal/mole.The structure of QM7 is as follows:
+The dataset that has been used in implementation of a network was taken from \cite{dataset}.The whole credit of using this data goes to \cite{blum} \cite{rupp}. It is a subset of a much broader data set, namely GDB-13 which contains close to one billion stable and synthetically accessible organic molecules. It is important to note that QM7 dataset has molecules that do not exceed 23 atoms in accordance to their structure. The whole dataset has 7165 molecules with their Coulomb's matrices calculated beforehand. The atomization energies are in SI units of kcal/mole in the range between $-2000$ to $-800$ kcal/mole.The structure of QM7 is as follows:
 
 \begin{itemize}
     \item Array X: It represents the molecules and their respective Coulomb's matrices having the shape (7165 x 23 x 23), this array is treated as an iput for neural network.
     \item Array T: It represents the atomization energies of the molecules having the shape (7165).
-    \item Array P: It represents a set of data used for cross validation.
-    \item Array Z: It represents the value of atomic charge used for calculating Coulomb's matrix.
-    \item Array R: It represents the cartesian coordinate of each atom in the molecules.
 \end{itemize}
 
-\section{Data preprocessing}
+\section{Google colaboratory platform}
+
+Since deep learning methods can be highly sensitive to hardware of a computational unit, we will use Google Colaboratory (Colab), the free platform for typing and executing Python code along with neccessary libraries. Using Colab will have an advantage of being portable, one can open a web browser and does not have to worry about performance speed and computing resources. Strengths of Colab come from those facts:
+
+\begin{itemize}
+    \item It has pre-configured environment so a user does not have to manually pre-set every setting connected to Python ecosystem.
+    \item It gives free (up to 12 hours) access to using GPU (Graphical Processing Unit) so a user does not have to have a PC that comes from high-end technology.
+    \item It is portable, the wholde code can be saved and download as a .ipynb file so it can be run later on any device with Python on the board.
+\end{itemize}
+
+
+Below we can see how the code can be compiled using Google environment:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{DocumentFigures/MyFigures/feedforwardenvir.png}
+\caption{Google Colaboratory Platform - screenshot I}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{DocumentFigures/MyFigures/ImpotLibrariesEnvir.png}
+\caption{Google Colaboratory Platform - screenshot II}
+\end{figure}
+
+
+\section{Sketch of the model ( layers and flattening)}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{DocumentFigures/MyFigures/FlattenOperatioNNscheme.png}
+\caption{Simplified sketch of architecture}
+\label{fig:sketch}
+\end{figure}
+
+On figure ~\ref{fig:sketch} we can see a sketch of the entire model who wil be subjected to finite number of iterations. Figure ~\ref{fig:sketch} summarizes what will be happening in the code:
+
+\begin{itemize}
+    \item First, load a Coulomb matrix to the input layer;
+    \item Then run the algorithm and let the data flow through the hidden layers;
+    \item Just before the final layer, flatten the matrix, i.e. transform it to a 1-D vector;
+    \item Finally, get predicted energies from the output;
+\end{itemize}
+
+\section{Pipeline}
+
+\subsection{Importing libraries}
+
+This step is self explanatory. The imports of libraries are neccessary to run the program:
+
+\begin{verbatim}[language=Python]
+
+import numpy as np
+from sklearn.model_selection import train_test_split
+import tensorflow as tf
+from tensorflow import keras
+from keras.layers import Flatten, Dense
+import scipy.io
+import time
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_absolute_error
+from keras.callbacks import ReduceLROnPlateau, EarlyStopping
+from keras.models import Sequential
+from keras import optimizers
+from sklearn.metrics import r2_score
+import seaborn as sns
+
+
+\end{verbatim}
+
+
+\subsection{Dataset loading}
+
+We use sci-kit learn library to load our dataset. It is written as .mat file ( meaning that it was generated in MATLAB environment). By using loadmat() method we convert the data to numpy array:
+
+\begin{verbatim}[language=Python]
+
+
+dataset = scipy.io.loadmat('drive/MyDrive/MLThesis/data/qm7.mat')
+
+
+\end{verbatim}
+
+
+\subsection{Data preview}
 
 By using the below code we can preview first records of the data that will be put into the MLP algorithm:
 
@@ -805,7 +908,7 @@ By using the below code we can preview first records of the data that will be pu
     y[:3]
 \end{verbatim}
 
-And see how the data look like in the array for y - dependent variable:
+and see how the data look like in the array for y - dependent variable:
 
 \begin{verbatim}
     array([[-417.96],
@@ -860,9 +963,9 @@ And independent variable X:
 \end{verbatim}
 
 
-This is how the data with coulomb matrix looks like (first entry of the data, 23 x 23 coulomb matrix) as well as the target variable that we want to predict:
+This is how the data with coulomb matrix look like (first entry of the data, 23 x 23 coulomb matrix) as well as the target variable that we want to predict:
 
-\begin{figure}[h!]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[scale=0.5]{DocumentFigures/MyFigures/input_data_CM.png}
 \caption{Screenshot of data - the input variable}
@@ -870,73 +973,7 @@ This is how the data with coulomb matrix looks like (first entry of the data, 23
 \includegraphics[scale=0.8]{DocumentFigures/MyFigures/target_variable.png}
 \caption{Screenshot of data - the target variable}
 \end{figure}
-
-\section{Google colaboratory platform}
-
-Since deep learning methods can be highly sensitive to hardware of a computational unit, we will use Google Colaboratory (Colab), the free platform for typing and executing Python code along with neccessary libraries. Using Colab will have an advantage of being portable, one can open a web browser and does not have to worry about performance speed and computing resources. Strengths of Colab come from those facts:
-
-\begin{itemize}
-    \item It has pre-configured environment so a user does not have to manually pre-set every setting connected to Python ecosystem.
-    \item It gives free (up to 12 hours) access to using GPU (Graphical Processing Unit) so a user does not have to have a PC that comes from high-end technology.
-    \item It is portable, the wholde code can be saved and download as a .ipynb file so it can be run later on any device with Python on the board.
-\end{itemize}
-
-
-Below we can see how the code can be compiled using Google environment:
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.4]{DocumentFigures/MyFigures/feedforwardenvir.png}
-\caption{Google Colaboratory Platform - screenshot I}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.4]{DocumentFigures/MyFigures/ImpotLibrariesEnvir.png}
-\caption{Google Colaboratory Platform - screenshot II}
-\end{figure}
-
-
-
-\section{Pipeline}
-
-\subsection{Importing libraries}
-
-This step is self explanatory. The imports of libraries are neccessary to run the program:
-
-\begin{verbatim}[language=Python]
-
-import numpy as np
-from sklearn.model_selection import train_test_split
-import tensorflow as tf
-from tensorflow import keras
-from keras.layers import Flatten, Dense
-import scipy.io
-import time
-import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import mean_absolute_error
-from keras.callbacks import ReduceLROnPlateau, EarlyStopping
-from keras.models import Sequential
-from keras import optimizers
-from sklearn.metrics import r2_score
-import seaborn as sns
-
-
-\end{verbatim}
-
-
-\subsection{Dataset loading}
-
-We use sci-kit learn library to load our dataset. It is written as .mat file ( meaning that it was generated in MATLAB environment). By using loadmat() method we convert the data to numpy array:
-
-\begin{verbatim}[language=Python]
-
-
-dataset = scipy.io.loadmat('drive/MyDrive/MLThesis/data/qm7.mat')
-
-
-\end{verbatim}
+\FloatBarrier
 
 \subsection{Scaling and reshaping}
 
@@ -978,10 +1015,8 @@ X_trainvalidate, X_test, Y_trainvalidate, Y_test = train_test_split(X_scaled,
                                                     random_state=666)
 
 # Data for the algo input
-X_train, X_validation, Y_train, Y_validation = train_test_split(X_trainvalidate, 
-                                                                Y_trainvalidate,  
-                                                                test_size=.20, 
-                                                                random_state=666)
+X_train, X_validation, Y_train, Y_validation = train_test_split(X_trainvalidate,  Y_trainvalidate,  
+test_size=.20, random_state=666)
 \end{verbatim}
 
 
@@ -990,13 +1025,15 @@ X_train, X_validation, Y_train, Y_validation = train_test_split(X_trainvalidate,
 After the data pre-processing we can go into the structure of a model using Keras sequential model. It is a perfect fit for a situation where each layer has exactly one input tensor and one output tensor where overall, we have a stack of layers. We could not use the sequential model in a following scenario:
 
 \begin{itemize}
-    \item There would have been multiple inputs or outputs in the model
-    \item Any layer has multiple inputs or outpus
-    \item A layer sharing is required for a model to perfom well
-    \item There would be a need for non-linear topology
+    \item There would have been multiple inputs or outputs in the model;
+    \item Any layer has multiple inputs or outpus;
+    \item A layer sharing is required for a model to perfom well;
+    \item There would be a need for non-linear topology;
 \end{itemize}
 
-We will pass a list of layers to the Sequential constructor contained in variable "model". We will also specify a normal distribution for weights generation. :
+
+\noindent
+We will pass a list of layers to the Sequential constructor contained in variable 'model'. We will also specify a normal distribution for weights generation.
 
 \begin{verbatim}
 
@@ -1025,17 +1062,7 @@ After the above is met, we use compile method to configurate the model for train
 
 
 
-Through the usage of "add" method, we create overall 6 layers with different shapes, we use reLU activation function for the first four layers, then we use "Flatten" function (the whole operation is sketched below) to get our output as a 1-D vector using linear activation function on the output. 
-
-
-\subsection{Sketch of the model ( layers and flattening)}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.4]{DocumentFigures/MyFigures/FlattenOperatioNNscheme.png}
-\caption{Simplified sketch of architecture}
-\end{figure}
-
+Through the usage of "add" method, we create overall 6 layers with different shapes, we use reLU activation function for the first four layers, then we use "Flatten" function to get our output as a 1-D vector using linear activation function on the output. 
 
 \section{Training the model}
 
@@ -1117,9 +1144,9 @@ The algorithm was given 15 epochs until it finished training itself and Mean Abs
 
 \section{Conclusions}
 
-The author of this thesis has described the quantum principles that have been used to calculate chemical quantum parameters such as atomization energy. We can see that algorithm has reached convergence both on training set and validation set implying that it has found the approximated solution (approximated energies) with $23.04$ MAE. The $R^2$ coefficient of determination of the regression analysis gives $0.9769$ which implies that the approximated energies were predicted in a way that they closely resemble the real ones. Residual analysis shows that there are only few outliers and there is not a clear visible pattern constructed from points therefore we can say that the model is able to capture some explanatory information.
+The author of this thesis has described the quantum principles that have been used to calculate chemical quantum parameters such as atomization energy. Then a brief description of machine learning and deep learning was provided to explain how one can use ML algorithms to predict atomization energy. By leveraging Python language and its libraries, it has been shown how one can construct a whole machine learning model - a feed-forward neural network - which is able to give predictions for quantum mechanical parameter. We can see that the network has reached convergence both on training set and validation set implying that it has found the approximated solution (approximated energies) with $23.04$ MAE. The $R^2$ coefficient of determination of the regression analysis gives $0.9769$ which implies that the approximated energies were predicted in a way that they closely resemble the real ones. Residual analysis shows that there are only few outliers and there is not a clear visible pattern constructed from points therefore we can say that the model is able to capture some explanatory information.
 
-It has been shown that Deep Learning methods can be used to solve interesting Physics phenomena in quantum oriented field. What remains is the need to improve the validity of the models and closely approach the chemical and physical accuracy that one can achieve by the experiment.
+It has been shown that Deep Learning methods can be used to solve an interesting Physics problem in QM. What remains is the need to improve the validity of the models and closely approach the chemical and physical accuracy that one can achieve by the experiment.
 
 
 
@@ -1130,7 +1157,7 @@ It has been shown that Deep Learning methods can be used to solve interesting Ph
 
 
 
-\begin{verbatim}
+\begin{lstlisting}
 
 Automatically generated by Colaboratory.
 
@@ -1177,12 +1204,12 @@ Y_scaled = Y / Y_max
 
 
 # Leave data that will be "unseen" in X_test and Y_test variables
-X_trainvalidate, X_test, Y_trainvalidate, Y_test = train_test_split(X_scaled, Y_scaled,  
-                                                    test_size=.15, 
-                                                    random_state=666)
+X_trainvalidate, X_test, Y_trainvalidate, Y_test = train_test_split(X_scaled, Y_scaled, test_size=.20, random_state=666)
+
 
 # Data for the algo input
-X_train, X_validation, Y_train, Y_validation = train_test_split(X_trainvalidate, Y_trainvalidate,  test_size=.18, random_state=666)
+X_train, X_validation, Y_train, Y_validation = train_test_split(X_trainvalidate, Y_trainvalidate, test_size=.20, random_state=666)
+
 
 
 model = Sequential()
@@ -1196,9 +1223,7 @@ model.add(Flatten())
 model.add(Dense(1, activation='linear'))
 
 
-model.compile(loss='mae',
-              optimizer=optimizers.Adam(.001),
-              metrics=['mae', tf.keras.metrics.RootMeanSquaredError()])
+model.compile(loss='mae', optimizer=optimizers.Adam(.001), metrics=['mae', tf.keras.metrics.RootMeanSquaredError()])
 
 
 
@@ -1282,7 +1307,7 @@ plt.hlines(y=0, xmin= -2100.0, xmax= 0.0, color='red', lw=5)
 
 
 
-\end{verbatim}
+\end{lstlisting}
 
 \printbibliography[
 heading=bibintoc,
