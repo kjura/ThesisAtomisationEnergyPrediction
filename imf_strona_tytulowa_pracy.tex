@@ -138,10 +138,35 @@
 \def\rok{2021}
 %% KONIEC DANYCH
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
 \begin{document}
+
+
+
+
 \maketitle
 \listoffigures
 
+\chapter*{Abstract}
+
+The main goal of this thesis was to show how deep learning, a subset of machine learning, can be used to predict quantum mechanical parameters calculated from the Schrödinger equation i.e. atomization energies by using specific representation of molecules known as Coulomb Matrices which can be used as the input data for feed-forward neural network. 
+
+Physical analysis of quantum mechanical properties gives plethora of information about the microscopic world but the standard methods of solving the Schrödinger equation have large computational complexity and require heavy numerical calculations which can take days to finish. On the other hand, experimental workings take too much time to set up and can be financially expensive. It would be highly beneficial to leverage modern power of artificial neural networks.
+
+Machine learning has becoming more and more popular due to increase in computational power and very useful tools from statistical methods. It is natural then to use methods offered by ML to adapt them to problems in Physics that can result in optimal solutions to given tasks.
+
+\chapter*{Abstrakt}
+
+Głównym celem pracy było ukazanie jak metody uczenia głębokiego, które są podzbiorem uczenia maszynowego, mogą być użyte do predykcji wielkości kwantowo-mechanicznych uzyskanych z równania Schrödinger'a t.j energii atomizacji używając odpowiedniej reprezentacji molekuł jako macierze Coulomba, które mogą być użyte jako dane wejściowe w głębokiej sieci neuronowej.
+
+Analiza fizyczna wielkości kwantowo-mechanicznych jest w stanie ukazać ogrom informacji na temat świata mikroskopowego aczkolwiek standardowego metody rozwiązywania równania Schrödinger'a są złożone obliczeniowo i wymagają trudnych numercznych metod, które mogą trwać nawet do kilku dni. Z drugiej strony, podejście eksperymentalne zajmuje dużo czasu i może być również kosztowne finansowo. Byłobo wysoce efektywne wykorzystać nowoczesne metody sztucznych sieci neuronowych.
+
+Uczenie maszynowe staje się ocraz bardziej popularne w związku ze zwiększeniem się mocy obliczeniowej komputerów oraz wsparciem ze strony metod statystycznych. Jest zatem zrozumiałe aby użyć metod uczenia maszynowego by zaadoptować je do problemów w fizyce, które mogą skutkować optymalnym rozwiązaniem rozważanego problemu.
 
 
 
@@ -369,38 +394,36 @@ put the data into machine learning algorithm and train it until it starts to see
 
 \section{Types of machine learning}
 
+This section will provide the description of four fundamental types of machine learning. When faced with problem, one type might give better results than the others so it is important to summarise when can we apply each technique. 
+
+
 \subsection{Supervised machine learning}
 
-Supervised learning requires a labeled dataset. We train our model on the labeled and known. Supervised machine learning requires less training data than other machine learning methods and makes training easier because the results of the model can be compared to actual labeled results.
+Supervised machine learning concentrates on labeled data which are known before we even start to train the algorithm. We try to predict the unseen or future data by feeding known labels to the algorithm. A popular example is how email spam filtering works. If we have data consisting of two labels: a spam message or non-spam message, we can train the algorithm on that data to predict the future spam message and classify them accordingly so our experience of handling e-mails will be much better \cite{raschka}\cite{aurelion}.  
 
 
 
 \subsection{Unsupervised machine learning}
 
-Unsupervised learning is less about automating decisions and predictions, and more about identifying patterns and relationships in data that humans would miss. The unsupervised learning algorithm can analyze huge volumes of emails and uncover the features and patterns that indicate spam 
-
-\subsection{Semi-supervised learning }
-
-Semi-supervised learning offers a happy medium between supervised and unsupervised learning. During training, it uses a smaller labeled data set to guide classification and feature extraction from a larger, unlabeled data set.
+Unsupervised learning focuses on unlabeled data or a data with unknown structure. We can take a large pile of data and organize them into subgroups also called clusters. We can then study and analyse these and find groups that share some of similarity between each other and they are more dissimilar with respect to other groups. We can then structure the data and discover new patterns and labels through grouping similar data \cite{raschka}\cite{aurelion}.
 
 \subsection{Reinforcement machine learning}
 
-Reinforcement learning is the training of machine learning models to make a sequence of decisions for a given scenario.
-At its core, we have an autonomous agent such as a person, robot, or deep net learning to navigate an uncertain environment. The goal of this agent is to maximize the numerical reward.
+Reinforcement learning is based on the system (an agent) that acts with the environment and is seeking a reward signal. It is similar to supervised learning but the system does not learn from labels or values but rather it constantly searches for an action that will produce the greatest value by a reward function. Through trial and error, agent learns how it should do a given task to maximize its reward \cite{raschka}\cite{aurelion}.
 
 
 \subsection{Deep learning}
 
-Deep learning is a subset of machine learning (all deep learning is machine learning, but not all machine learning is deep learning). Deep learning algorithms define an artificial neural network that is designed to learn the way the human brain learns. Deep learning models use data that pass through multiple neurons, then the weights and biases are applied in each successive layer to continually adjust and improve the outcomes.
+Deep learning is a subset of machine learning (all deep learning is machine learning, but not all machine learning is deep learning). Deep learning algorithms use an artificial neural network that is designed to learn the way the human brain learns. Deep learning models use data that pass through multiple neurons, then the weights and biases are applied in each successive layer to continually adjust and improve the outcomes \cite{Goodfellow-et-al-2016}.
 
 
 \section{Machine learning pipeline}
 
-To be able to build a machine learning model one can summarize the idea in below steps\cite{what_ML_IBM}:
+In order to construct a machine learning model these are typical steps to be followed \cite{what_ML_IBM}:
 
 \subsubsection{Selection and preprocessing of a dataset}
 
-Every machine learning model should have a dataset that will be split into two parts: the training set and the testing set. The training set is necessary in order for a model to learn from its mistakes. The test set is used to see how well the model predicts values of interest. Depending on the dataset, it can be labeled, meaning that it has 'tags' which combined with certain features can give us solid outputs, other times the data is unlabeled, meaning that the model will have to extract the hidden patterns from the features itself.
+Machine learning models typically learn on two kinds of dataset that is split before the learning takes place: the training set and the testing set. The training set is necessary in order for a model to learn from its mistakes. The test set is used to see how well the model predicts values of interest previously unseen. The test set offers a clear message when the learning is done, based on the score on the test set we can either state that the given model handles the predition correctly or it does not work for a given problem. Depending on the dataset, it can be labeled, meaning that it has 'tags' which combined with certain features can give us solid outputs, other times the data is unlabeled, meaning that the model will have to extract the hidden patterns from the features itself.
 
 \subsubsection{Categorical and numerical data}
 
@@ -546,7 +569,7 @@ If we rearange the terms and define a weight-zero as $w_{0} = - \theta$ and $x_{
 
 After this operation we write $\phi(z)$ as:
 
-\begin{equation}
+\begin{equation} \label{step_function}
     \phi(z) = 
 \begin{cases}
      1  & \text{if } z \geq 0, \\
@@ -555,10 +578,25 @@ After this operation we write $\phi(z)$ as:
 \end{equation}
 
 
-The negative threshold is often called the bias unit.\cite{raschka}
+The negative threshold is often called the bias unit\cite{raschka}.
 
 \subsection{Learning rule of the perceptron}
 
+
+The key principle of how perceptron learns from the data is the update of weights. The simultaneous update of each weight $w_{j}$, in the weight vector $\textbf{w}$, can be written as \cite{raschka}:
+
+\begin{equation} \label{update_rule}
+    w_{j} := w_{j} + \Delta w_{j},
+\end{equation}
+
+where the change in $w_{j}$ is calculated as:
+
+
+\begin{equation} \label{delta_wj}
+    \Delta w_{j} = \eta (y^{(i)} - \hat{y}^{(i)}) x_{j}^{(i)},
+\end{equation}
+
+where $\eta$ is called the learning rate, $y^{(i)}$ is a true class label and $\hat{y}^{(i)}$ is the class predicted by perceptron.
 
 The whole idea of a learning rule for perceptron can be summarised in a simple manner:
 
@@ -567,7 +605,7 @@ The whole idea of a learning rule for perceptron can be summarised in a simple m
     \item For every training example $\textbf{x}^{(i)}$:
     \begin{itemize}
         \item Compute the output value $\hat{{y}}$ ;
-        \item Update the weights according to update rule;
+        \item Update the weights according to update rule (\ref{delta_wj});
     \end{itemize}
 \end{enumerate}
 
@@ -578,11 +616,11 @@ To understand the concept of multilayer neural networks let us begin with simple
 The main difference between Rosenblatt's perceptron learning rule and Adaline is the update of weights. The weights are updated using a linear function also called activation function (crucial concept for deep learning methods) instead of being updated by a unit step function. The activation function in Adaline is written as $\phi(z)$ which is just:
 
 
-\begin{equation}
+\begin{equation} 
     \phi(z) =  \phi(\textbf{w}^{T} \textbf{X}) = \textbf{w}^{T} \textbf{X}.
 \end{equation}
 
-However, the algorithm still needs  a threshold function to predict the final output, linear function only learns the weights.
+The threshold function is still used to predict the final outcome (class)  as is being done in the Perceptron learning rule (\ref{step_function})
 
 \section{The Multilayer Perceptron and Backpropagation}
 
@@ -648,52 +686,6 @@ we just update the weights for each example:
 \end{equation}
 
 The strength of stochastic gradient descent is reaching convergence much faster than the "regular" gradient descent, after all, we update the weights more frequently. Each gradient is evaluated on a single example therefore there is the error surface is noiser than in GD which has its advantage when it comes to escaping local minima. It is worth to mention that to get accurate results one must shuffle the dataset for every iteration to prevent cycles and one must present the data in a random order. \cite{raschka}
-
-
-\subsection{Automatic differentiation}
-
-
-Calculating the derivatives by hand in gradient descent algorithm would be quite tedious especially when we have many iterations of our model. Derivatives in computing can can be calculated by four main methods:
-
-\begin{itemize}
-    \item working out derivatives manually and coding results into computer;
-    \item  numerical differentiation;
-    \item symbolic differentiation using computer algebra;
-    \item automatic differentiation;
-\end{itemize}
-
-
-While we could figure out derivatives manually and then put them into a computer and this would get rid of problems with approximation errors and make the derivatives stable in comparison with numerical differentiation, this method has an unavoidable weakness, it is prone to human error and as was said before can become tiresome after a while. Symbolic differentiation could have been a sweet spot between both previous methods but can result with the problem of "expression swell".
-
-The automatic differentiation (AD) gives another look at the problem. It consistently applies the chain rule of calculus to calculate a "flow" of derivatives. Given a series of computations $y = f(g(h(x)))$ with input $x$ and output $y$ we broke this into a series of steps: \cite{raschka}
-
-\begin{itemize}
-    \item $u_{0} = x$;
-    \item $u_{1} = h(x)$;
-    \item $u_{2} = g(u_{1})$;
-    \item $u_{3} = f(u_{2}) = y$;
-\end{itemize}
-
-Then the derivative $\frac{dy}{dx}$ can be computed in two different ways:
-
-\begin{itemize}
-    \item forward accumulation: $\frac{du_{3}}{dx} = \frac{du_{3}}{du_{2}}\frac{du_{2}}{du_{0}}$
-    \item backward accumulation: $\frac{dy}{du_{0}} = \frac{dy}{du_{1}}\frac{du_{1}}{du_{0}}$
-\end{itemize}
-
-
-
-
-
-
-It is important to remember that automatic differentiation is not numerical differentiation. The standard finite difference formula uses a definition:
-
-\begin{equation}
-    \frac{d f(x)}{dx} = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}.
-\end{equation}
-
-While it is easy to implement it is prone to truncation and round-off errors. AD is also not symbolic differentiation such as we see in CAS programs (computer algebra system) like Mathematica, Maple, Maxima, Sage, Matlab. Symbolic results allow for analytical methods to solve a problem but one must take into account that expressions can get exponentially larger through differentiation. \cite{baydin2014automatic}
-
 
 \subsection{Backpropagation}
 
@@ -1007,17 +999,14 @@ Y_scaled = Y / Y_max
 We begin by using the holdout method and we are splitting the data into three parts: a training dataset, a validation dataset, and a test dataset. Test data set vs validation and training data set is split in 80:20 ratio. Same is the split for training and validation.
 
 
-\begin{verbatim}
+\begin{lstlisting}
 # Leave data that will be "unseen" in X_test and Y_test variables
-X_trainvalidate, X_test, Y_trainvalidate, Y_test = train_test_split(X_scaled, 
-                                                                    Y_scaled,  
-                                                    test_size=.20, 
-                                                    random_state=666)
+X_trainvalidate, X_test, Y_trainvalidate, Y_test = train_test_split(X_scaled, Y_scaled,  test_size=.20, random_state=666)
 
 # Data for the algo input
 X_train, X_validation, Y_train, Y_validation = train_test_split(X_trainvalidate,  Y_trainvalidate,  
 test_size=.20, random_state=666)
-\end{verbatim}
+\end{lstlisting}
 
 
 \subsection{Sequential model}
@@ -1081,7 +1070,7 @@ reduce_eta = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=1, verbo
 n_epochs = 15
 
 history = model.fit(X_train, Y_train,
-                      batch_size=4,
+                      batch_size=10,
                       epochs=n_epochs, 
                       callbacks=[reduce_eta],
                       verbose=1,
@@ -1103,7 +1092,7 @@ The algorithm was given 15 epochs until it finished training itself and Mean Abs
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.5]{DocumentFigures/ZdjeciaWalidacja/MAEtest.png}
+\includegraphics[scale=0.6]{DocumentFigures/ZdjeciaWalidacja/MAEtest.png}
 \caption{Summary of the model after all iterations have passed}
 \end{figure}
 
@@ -1144,7 +1133,7 @@ The algorithm was given 15 epochs until it finished training itself and Mean Abs
 
 \section{Conclusions}
 
-The author of this thesis has described the quantum principles that have been used to calculate chemical quantum parameters such as atomization energy. Then a brief description of machine learning and deep learning was provided to explain how one can use ML algorithms to predict atomization energy. By leveraging Python language and its libraries, it has been shown how one can construct a whole machine learning model - a feed-forward neural network - which is able to give predictions for quantum mechanical parameter. We can see that the network has reached convergence both on training set and validation set implying that it has found the approximated solution (approximated energies) with $23.04$ MAE. The $R^2$ coefficient of determination of the regression analysis gives $0.9769$ which implies that the approximated energies were predicted in a way that they closely resemble the real ones. Residual analysis shows that there are only few outliers and there is not a clear visible pattern constructed from points therefore we can say that the model is able to capture some explanatory information.
+The author of this thesis has described the quantum principles that have been used to calculate chemical quantum parameters such as atomization energy. Then a brief description of machine learning and deep learning was provided to explain how one can use ML algorithms to predict atomization energy. By leveraging Python language and its libraries, it has been shown how one can construct a whole machine learning model - a feed-forward neural network - which is able to give predictions for quantum mechanical parameter. We can see that the network has reached convergence both on training set and validation set implying that it has found the approximated solution (approximated energies) with $20.701$ MAE. The $R^2$ coefficient of determination of the regression analysis gives $0.9807$ which implies that the approximated energies were predicted in a way that they closely resemble the real ones. Residual analysis shows that there are only few outliers and there is not a clear visible pattern constructed from points therefore we can say that the model is able to capture some explanatory information.
 
 It has been shown that Deep Learning methods can be used to solve an interesting Physics problem in QM. What remains is the need to improve the validity of the models and closely approach the chemical and physical accuracy that one can achieve by the experiment.
 
@@ -1235,7 +1224,7 @@ reduce_eta = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=1, verbo
 n_epochs = 15
 
 history = model.fit(X_train, Y_train,
-                      batch_size=4,
+                      batch_size=10,
                       epochs=n_epochs, 
                       callbacks=[reduce_eta],
                       verbose=1,
